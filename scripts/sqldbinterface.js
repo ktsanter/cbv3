@@ -40,7 +40,12 @@ class SQLDBInterface {
     var result = {success: false, details: 'unspecified error in ' + METHOD_TITLE};
 
     try {
-      const resp = await fetch(url);
+      const resp = await fetch(url, {
+        method: 'get', 
+        mode: 'cors',
+        headers: {'Content-Type': 'application/json; charset=utf-8'}
+      });
+
       const json = await resp.json();
       //console.log(json);
 
@@ -68,7 +73,12 @@ class SQLDBInterface {
     var result = {success: false, details: 'unspecified error in ' + METHOD_TITLE};
 
     try {
-      const resp = await fetch(url, {method: 'post', headers: {'Content-Type': 'application/json; charset=utf-8'}, body: JSON.stringify(postData)});
+      const resp = await fetch(url, {
+        method: 'post', 
+        mode: 'cors',
+        headers: {'Content-Type': 'application/json; charset=utf-8'}, 
+        body: JSON.stringify(postData)
+      });
       const json = await resp.json();
       //console.log(json);
       
@@ -97,7 +107,7 @@ class SQLDBInterface {
 
     var url = dbOrigin + '/' + queryType + '/' + queryName;
     
-    console.log('buildApiUrl: url: ' + url);
+    //console.log('buildApiUrl: url: ' + url);
     
     return url;
   }  

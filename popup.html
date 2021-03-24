@@ -11,20 +11,8 @@
       integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
       crossorigin="anonymous"
     >
-<!--
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" 
-      rel="stylesheet" 
-      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" 
-      crossorigin="anonymous"
-    >
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
-      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" 
-      crossorigin="anonymous"
-    >
---> 
+    
+    <script src="scripts/clipboard.min.js"></script>
     <script data-main="scripts/require_popup" src="scripts/require.js"></script>
   </head>
   
@@ -38,9 +26,9 @@
               <i class="fas fa-bars"> </i>
             </a>
             <div class="dropdown-content">
-              <a href="#"> edit comments </a>
-              <a href="#"> help </a>
-              <a href="#"> about </a>
+              <a href="#" class="dropdown-item item-edit"> edit comments </a>
+              <a href="#" class="dropdown-item item-help"> help </a>
+              <a href="#" class="dropdown-item item-about"> about </a>
             </div>
           </li>
         </ul>
@@ -51,55 +39,23 @@
       <div class="contents">
         <div class="controls">
           <div class="control-group">
-            <span class="control-label"> <i class="fas fa-search"></i> </span>
+            <span class="control-label"> <i class="fas fa-search" title="search"></i> </span>
             <input type="text" class="input-search">
           </div>
 
           <div class="control-group">
-            <span class="control-label"> <i class="fas fa-tag"></i> </span>
+            <span class="control-label"> <i class="fas fa-tag" title="filter by tags"></i> </span>
             <input type="text" class="input-tag">
-            <i class="fas fa-caret-right icon-tag"> </i>
+            <i class="fas fa-caret-right icon-tag" title="select tags from list"> </i>
             
-            <div class="taglist hide-me">
-              <div class="taglist-item"> tagA </div>
-              <div class="taglist-item"> tagB </div>
-              <div class="taglist-item"> tagC </div>
-              <div class="taglist-item"> tagD </div>
-              <div class="taglist-item"> tagE </div>
-              <div class="taglist-item"> tagF </div>
-              <div class="taglist-item"> tagG </div>
-              <div class="taglist-item"> tagH </div>
-              <div class="taglist-item"> tagI </div>
-              <div class="taglist-item"> tagJ </div>
-              <div class="taglist-item"> tagK </div>
-              <div class="taglist-item"> tagL </div>
+            <div class="taglist hide-me"> 
+              <!-- populated by app -->
             </div>
           </div>
         </div>
         
         <div class="commentlist">
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx xxxxxx xxx xxx xxxx xxx xxxxxx xxx xxx AAAA BBBB CCCC DDDD EEEE FFFF  </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
-          <div class="commentlist-item"> xxxxxx xxx xxx xxxx xxx </div>
+          <!-- populated by app -->
         </div>
         
         <div class="rendered hide-me"> </div>

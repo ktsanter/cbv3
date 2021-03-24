@@ -28,6 +28,18 @@ body {
   border: 1px solid var(--bgPrimary);
   border-radius: 4px;
   width: 100%;
+  position: relative;
+}
+
+/*---------------------------------------------*/
+/* error container                             */
+/*---------------------------------------------*/
+.main-container .error-container {
+  color: white;
+  background-color: var(--bgPrimary);
+  position: absolute;
+  right: 2.0em;
+  top: 0.2em;
 }
 
 /*---------------------------------------------*/
@@ -74,9 +86,9 @@ li.dropdown {
 .dropdown-content {
   display: none;
   position: absolute;
-  right: 10.6em;
+  left: 27.6em;
   background-color: #f9f9f9;
-  min-width: 8.0em;
+  min-width: 10.0em;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -147,6 +159,10 @@ li.dropdown {
   background-color: rgba(0,0,0, 0.05);
 }
 
+.contents .controls .taglist-item:hover {
+  background-color: var(--bgSecondary);
+}
+
 /*---------------------------------------------*/
 /* contents - comment list                     */
 /*---------------------------------------------*/
@@ -163,6 +179,17 @@ li.dropdown {
 .contents .commentlist .commentlist-item:nth-of-type(even) {
   background-color: rgba(0,0,0, 0.05);
 }
+
+.contents .commentlist .commentlist-item:hover {
+  background-color: var(--bgSecondary);
+}
+
+.contents .commentlist .commentlist-item.selected-item {
+  color: white;
+  background-color: var(--bgPrimary);
+}
+
+
 
 /*---------------------------------------------*/
 /* contents - rendered                         */
