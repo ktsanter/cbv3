@@ -2,6 +2,7 @@
 // CBv3 popup
 //------------------------------------------------------------------------------
 // TODO: add login mechanism and store for user id
+// TODO: use chrome storage for persistent data rather than localstorage
 // TODO: data migration mechanism (from old CB to this one)
 // TODO: data download/restore mechanism (in composer?)
 // TODO: finish about
@@ -20,7 +21,7 @@ const app = function () {
     helpURL: 'help.html'
 	};
   
-  const userSettings = {
+  var userSettings = {
     userid: null,
     searchtext: '',
     tags: '',
@@ -50,6 +51,15 @@ const app = function () {
     page.notice = new StandardNotice(page.errorContainer, page.errorContainer);
     
     await _loadUserSettings();
+    userSettings.userid = 1;
+    
+    if (!userSettings.userid) {
+      console.log('no user id');
+      console.log(userSettings);
+      //return;
+      userSettings.userid = 1;
+    }
+    
     if ( !(await _getCommentData()) ) return;
     
     _attachHandlers();
@@ -253,20 +263,14 @@ const app = function () {
   //---------------------------------------
   async function _loadUserSettings() {
     page.notice.setNotice('loading user settings...', true);
-    var userid = localStorage.getItem('cbv3-userid');
+    var paramList = [
+      {paramkey: 'cbv3-userid', resultkey: 'userid', defaultval: null},
+      {paramkey: 'cbv3-searchtext', resultkey: 'searchtext', defaultval: ''},
+      {paramkey: 'cbv3-tags', resultkey: 'tags', defaultval: ''},
+      {paramkey: 'cbv3-commentid', resultkey: 'commentid', defaultval: null},
+    ];
     
-    var searchtext = localStorage.getItem('cbv3-searchtext');
-    if (searchtext == null) searchtext = '';
-    
-    var tagtext = localStorage.getItem('cbv3-tags');
-    if (tagtext == null) tagtext = '';
-    
-    var commentid = localStorage.getItem('cbv3-commentid');
-
-    userSettings.userid = 1;
-    userSettings.searchtext = searchtext
-    userSettings.tags = tagtext;
-    userSettings.commentid = commentid;
+    userSettings = ParamStorage.load(paramList);
     
     page.notice.setNotice('');
   }
@@ -275,11 +279,14 @@ const app = function () {
     userSettings.searchtext = page.searchText.value;
     userSettings.tags = page.tagText.value;
     userSettings.commentid = settings.selectedCommentId;
-
-    localStorage.setItem('cbv3-userid', userSettings.userid);
-    localStorage.setItem('cbv3-searchtext', userSettings.searchtext);
-    localStorage.setItem('cbv3-tags', userSettings.tags);
-    localStorage.setItem('cbv3-commentid', userSettings.commentid);
+    
+    var paramList = [
+      {paramkey: 'cbv3-searchtext', value: userSettings.searchtext},
+      {paramkey: 'cbv3-tags', value: userSettings.tags},
+      {paramkey: 'cbv3-commentid', value: userSettings.commentid},    
+    ];
+    
+    ParamStorage.store(paramList);
   }
   
 	//---------------------------------------
@@ -292,7 +299,6 @@ const app = function () {
     var userId = userSettings.userid;
     if (userId == null) {
       console.log('failed to get user id');
-      console.log('show login');
       return false;
     }
     

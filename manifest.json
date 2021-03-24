@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+
+  "name": "CommentBuddyV3",
+  
+  "short_name": "CBv3",
+  
+  "description": "CommentBuddy",
+  
+  "version": "3.01",
+  
+  "browser_action": {
+    "default_icon": "cbv3_logo_16.png",
+    "default_popup": "popup.html",
+    "default_title": "CommentBuddy"
+  },
+  
+  "permissions": [
+    "storage",
+    "tabs",
+    "clipboardWrite",
+    "contextMenus"
+  ],
+        
+  "icons": {
+     "16": "cbv3_logo_16.png",
+	 "128": "cbv3_logo_128.png"
+   },
+     
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

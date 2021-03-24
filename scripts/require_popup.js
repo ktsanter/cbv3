@@ -7,7 +7,8 @@ define(function (require) {
   require('create_element');  
   require('sqldbinterface'); 
   require('utilitykts');
-  require('clipboard_copy');  
+  require('clipboard_copy'); 
+  require('paramstorage');  
   require('popup');
 
   document.addEventListener('DOMContentLoaded', app.init());
