@@ -10,7 +10,7 @@
   "version": "3.01",
   
   "browser_action": {
-    "default_icon": "cbv3_logo_16.png",
+    "default_icon": "cbv3_logo_16v2.png",
     "default_popup": "popup.html",
     "default_title": "CommentBuddy"
   },
@@ -23,8 +23,8 @@
   ],
         
   "icons": {
-     "16": "cbv3_logo_16.png",
-	 "128": "cbv3_logo_128.png"
+     "16": "cbv3_logo_16v2.png",
+	 "128": "cbv3_logo_128v2.png"
    },
      
    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

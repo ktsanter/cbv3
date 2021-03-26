@@ -5,9 +5,12 @@
 // TODO: use chrome storage for persistent data rather than localstorage
 // TODO: data migration mechanism (from old CB to this one)
 // TODO: data download/restore mechanism (in composer?)
+// TODO: method (menu option?) for specifying different access key
 // TODO: finish about
 // TODO: finish help
 //------------------------------------------------------------------------------
+const __USELOCALHOST__ = true;
+
 const app = function () {
 	const page = {};
   
@@ -15,14 +18,13 @@ const app = function () {
     hideClass: 'hide-me',
     commentData: null,
     selectedCommentId: null,
-
-    origin: 'http://localhost:8000',    
-    editContentsURL: 'http://localhost:8000/commentbuddy/composer',
+   
+    editContentsURL: __USELOCALHOST__ ? 'http://localhost:8000/commentbuddy/composer' : 'https://aardvark-studios.com/commentbuddy/composer',
     helpURL: 'help.html'
 	};
   
   var userSettings = {
-    userid: null,
+    accesskey: null,
     searchtext: '',
     tags: '',
     commentid: null
@@ -38,6 +40,8 @@ const app = function () {
     page.errorContainer = page.mainContainer.getElementsByClassName('error-container')[0];
     page.navContainer = page.mainContainer.getElementsByClassName('nav-container')[0];
     page.contents = page.mainContainer.getElementsByClassName('contents')[0];
+    page.accesskeyDialog = page.mainContainer.getElementsByClassName('accesskey-dialog')[0];
+    page.accesskeyInput = page.accesskeyDialog.getElementsByClassName('input-accesskey')[0];
     
     page.control = page.contents.getElementsByClassName('controls')[0];
     page.searchText = page.control.getElementsByClassName('input-search')[0];
@@ -50,22 +54,42 @@ const app = function () {
     
     page.notice = new StandardNotice(page.errorContainer, page.errorContainer);
     
+
+    _attachHandlers();
+
     await _loadUserSettings();
-    userSettings.userid = 1;
     
-    if (!userSettings.userid) {
-      console.log('no user id');
-      console.log(userSettings);
-      //return;
-      userSettings.userid = 1;
+    if (!userSettings.accesskey) {
+      _openAccessKeyDialog();
+      return;
     }
     
-    if ( !(await _getCommentData()) ) return;
-    
-    _attachHandlers();
-    _renderCommentData();
+    await _finishLoading();
   }
-  	
+  
+  async function _finishLoading() {
+    if ( !(await _getCommentData()) ) return false;
+    
+    _renderCommentData();
+    
+    return true;
+  }
+  
+  function _openAccessKeyDialog() {    
+    UtilityKTS.setClass(page.accesskeyDialog, settings.hideClass, false);
+  }
+  
+  async function _handleAccessKeySubmit(e) {
+    var proposedKey = page.accesskeyInput.value;
+
+    if (proposedKey && proposedKey.length > 0) {
+      userSettings.accesskey = proposedKey;
+      if ( (await _finishLoading()) ) {
+        UtilityKTS.setClass(page.accesskeyDialog, settings.hideClass, true);
+      }
+    }
+  }
+  
 	//--------------------------------------------------------------
 	// page rendering
 	//--------------------------------------------------------------
@@ -78,16 +102,26 @@ const app = function () {
     page.searchText.addEventListener('input', (e) => { _handleLookupInput(e); });
     page.tagText.addEventListener('input', (e) => { _handleLookupInput(e); });
     page.control.getElementsByClassName('icon-tag')[0].addEventListener('click', (e) => { _handleTagToggle(e); });
+    
+    page.accesskeyDialog.getElementsByClassName('button-accesskey')[0].addEventListener('click', (e) => { _handleAccessKeySubmit(e); });
   }
+
   
   function _renderCommentData() {
     if (!settings.commentData) return;
+    
+    UtilityKTS.setClass(page.contents, settings.hideClass, false);
 
     _renderTagList(_buildTagList(settings.commentData));
 
     settings.selectedCommentId = userSettings.commentid;
     page.searchText.value = userSettings.searchtext;
     page.tagText.value = userSettings.tags;
+    
+    page.searchText.disabled = false;
+    page.tagText.disabled = false;
+    
+    page.tagIcon.style.visibility = 'visible';
     
     _filterCommentList();    
   }
@@ -150,6 +184,8 @@ const app = function () {
     _deselectComment();
     
     UtilityKTS.removeChildren(page.commentList);
+    UtilityKTS.setClass(page.commentList, settings.hideClass, filteredList.length == 0);
+    
     for (var i = 0; i < filteredList.length; i++) {
       var commentItem = filteredList[i];
       var elem = CreateElement.createDiv(null, 'commentlist-item', _toPlaintext(commentItem.comment));
@@ -264,7 +300,7 @@ const app = function () {
   async function _loadUserSettings() {
     page.notice.setNotice('loading user settings...', true);
     var paramList = [
-      {paramkey: 'cbv3-userid', resultkey: 'userid', defaultval: null},
+      {paramkey: 'cbv3-accesskey', resultkey: 'accesskey', defaultval: null},
       {paramkey: 'cbv3-searchtext', resultkey: 'searchtext', defaultval: ''},
       {paramkey: 'cbv3-tags', resultkey: 'tags', defaultval: ''},
       {paramkey: 'cbv3-commentid', resultkey: 'commentid', defaultval: null},
@@ -281,6 +317,7 @@ const app = function () {
     userSettings.commentid = settings.selectedCommentId;
     
     var paramList = [
+      {paramkey: 'cbv3-accesskey', value: userSettings.accesskey},
       {paramkey: 'cbv3-searchtext', value: userSettings.searchtext},
       {paramkey: 'cbv3-tags', value: userSettings.tags},
       {paramkey: 'cbv3-commentid', value: userSettings.commentid},    
@@ -296,13 +333,13 @@ const app = function () {
     page.notice.setNotice('loading comments...', true);
     settings.commentData = null;
     
-    var userId = userSettings.userid;
-    if (userId == null) {
-      console.log('failed to get user id');
+    var accesskey = userSettings.accesskey;
+    if (accesskey == null) {
+      console.log('failed to get accesskey in _getCommentData');
       return false;
     }
     
-    var dbResult = await SQLDBInterface.doPostQuery('commentbuddy-client/query', 'comment-list', {"userId": userId});
+    var dbResult = await SQLDBInterface.doPostQuery('commentbuddy-client/query', 'comment-list', {"accesskey": accesskey});
     if (dbResult.success) {
       settings.commentData = dbResult.data;
       page.notice.setNotice('');

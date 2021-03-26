@@ -82,4 +82,77 @@ class ParamStorage {
     });
   }
   */
+  
+  //---------------------------------------------------------------------------------
+  // private methods
+  //---------------------------------------------------------------------------------
+  static async test(paramList) {
+    var finalResult = null;
+    var result = {};
+    var resultMap = {};
+    var keyList = [];
+    
+    for (var i = 0;  i < paramList.length; i++) {
+      var param = paramList[i];
+      var key = param.paramkey;
+      var resultfield = paramList.resultkey;
+      var defaultval = paramList.defaultval;
+      
+      result[ resultfield ] = defaultval;
+      resultMap[ key ] = resultfield;
+      keyList.push( key );
+    }    
+    
+    var result = await this._testPromise(keyList, resultMap)
+      .then((value) => {
+        finalResult = value;
+      });
+
+    return finalResult;
+  }
+  
+  static _testPromise(keyList, resultMap) {
+    return new Promise((resolve) => {
+      this._test(keyList, (result) => {
+        console.log('_testPromise result');
+        for (var key in result) {
+          console.log(key + ': ' + result[key]);
+        }
+        resolve(result);
+      });
+    })
+  }
+
+  static _test(keyList, promiseCallback) {
+    console.log('_test: ' + JSON.stringify(keyList));
+    keyList = ['cb2_fileid'];
+    chrome.storage.sync.get(null, function(result) {
+      promiseCallback(result);
+    });
+  }
+
+  static async test2(paramList) {
+    var storageVals = paramList;
+
+    var result = await this._testPromise2(storageVals);
+
+    return true;
+  }
+  
+  static _testPromise2(storageVals) {
+    return new Promise((resolve) => {
+      this._test2(storageVals, () => {
+        resolve();
+      });
+    })
+  }
+
+  static _test2(storageVals, promiseCallback) {
+    var theValue = 'xyzzy';
+    console.log(storageVals);
+    chrome.storage.sync.set({storageVals}, function() {
+      console.log('Settings saved');
+      promiseCallback();
+    });    
+  }
 }

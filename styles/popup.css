@@ -3,7 +3,7 @@
 /*-----------------------------------------------------*/
 .colorscheme {
   --bgPrimary: rgba(66, 98, 150, 1.0);
-  --bgSecondary: rgba(66, 98, 150, 0.3);
+  --bgSecondary: rgba(66, 98, 150, 0.5);
   --borderSubtle: rgba(0,0,0, 0.2);
 }
 
@@ -135,6 +135,10 @@ li.dropdown {
   font-size: 1.4em;
   cursor: pointer;
   padding-left: 0.2em;
+}
+
+.contents .controls .icon-tag.hide-me {
+  visibility: hidden;
 }
 
 .contents .controls .taglist {

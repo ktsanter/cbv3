@@ -1,6 +1,6 @@
 "use strict";
 //---------------------------------------------------------------
-// SQL DB interface class
+// SQL DB interface class (modified for CBv3)
 //---------------------------------------------------------------
 // TODO: 
 //---------------------------------------------------------------
@@ -103,7 +103,10 @@ class SQLDBInterface {
 
   static __buildApiUrl__(queryType, queryName) {
     var dbOrigin = 'https://aardvark-studios.com';
-    var dbOrigin = 'http://localhost:8000';
+    if (__USELOCALHOST__) {
+      console.log('using localhost');
+      dbOrigin = 'http://localhost:8000';
+    }
 
     var url = dbOrigin + '/' + queryType + '/' + queryName;
     

@@ -36,17 +36,17 @@
       
       <div class="error-container"> </div>
       
-      <div class="contents">
+      <div class="contents hide-me">
         <div class="controls">
           <div class="control-group">
             <span class="control-label"> <i class="fas fa-search" title="search"></i> </span>
-            <input type="text" class="input-search">
+            <input type="text" class="input-search" disabled>
           </div>
 
           <div class="control-group">
             <span class="control-label"> <i class="fas fa-tag" title="filter by tags"></i> </span>
-            <input type="text" class="input-tag">
-            <i class="fas fa-caret-right icon-tag" title="select tags from list"> </i>
+            <input type="text" class="input-tag" disabled>
+            <i class="fas fa-caret-right icon-tag hide-me" title="select tags from list"> </i>
             
             <div class="taglist hide-me"> 
               <!-- populated by app -->
@@ -54,12 +54,19 @@
           </div>
         </div>
         
-        <div class="commentlist">
+        <div class="commentlist hide-me">
           <!-- populated by app -->
         </div>
         
         <div class="rendered hide-me"> </div>
       </div>
+      
+      <div class="accesskey-dialog hide-me">
+        <span class="accesskey-text"> Please enter the access key from the CommentBuddy composer </span>
+        <input type="text" class="input-accesskey">
+        <button class="button-accesskey"> submit </button>        
+      </div>
+      
     </div>
   </body>
 </html>
