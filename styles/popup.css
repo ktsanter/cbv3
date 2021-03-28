@@ -3,7 +3,7 @@
 /*-----------------------------------------------------*/
 .colorscheme {
   --bgPrimary: rgba(66, 98, 150, 1.0);
-  --bgSecondary: rgba(66, 98, 150, 0.5);
+  --bgSecondary: rgba(66, 98, 150, 0.2);
   --borderSubtle: rgba(0,0,0, 0.2);
 }
 
@@ -59,7 +59,7 @@ li a, .dropbtn {
   display: inline-block;
   color: white;
   text-align: center;
-  padding: 4px 4px 4px 4px;
+  padding: 4px 6px 4px 4px;
   text-decoration: none;
 }
 
@@ -204,6 +204,38 @@ li.dropdown {
   max-height: 17.0em;
   overflow-x: auto;
   overflow-y: auto;  
+}
+
+/*---------------------------------------------*/
+/* access key dialog                           */
+/*---------------------------------------------*/
+.accesskey-dialog {
+  margin: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.accesskey-dialog .accesskey-text {
+  margin-bottom: 0.4em;
+}
+
+.accesskey-dialog .input-accesskey {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 1.0em;
+  width: 60%;
+}
+
+.accesskey-dialog .button-accesskey {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 1.0em;
+  color: var(--bgPrimary);
+  background-color: white;
+  border: 1px solid var(--bgPrimary);
+}
+
+.accesskey-dialog .button-accesskey:hover {
+  color: white;
+  background-color: var(--bgPrimary);
+  border-color: white;
 }
 
 /*------------------------------------------------------------------

@@ -1,12 +1,9 @@
 //------------------------------------------------------------------------------
 // CBv3 popup
 //------------------------------------------------------------------------------
-// TODO: add login mechanism and store for user id
-// TODO: use chrome storage for persistent data rather than localstorage
 // TODO: data migration mechanism (from old CB to this one)
 // TODO: data download/restore mechanism (in composer?)
 // TODO: method (menu option?) for specifying different access key
-// TODO: finish about
 // TODO: finish help
 //------------------------------------------------------------------------------
 const __USELOCALHOST__ = true;
@@ -77,6 +74,13 @@ const app = function () {
   
   function _openAccessKeyDialog() {    
     UtilityKTS.setClass(page.accesskeyDialog, settings.hideClass, false);
+    page.accesskeyInput.value = '';
+    if (userSettings.accesskey) page.accesskeyInput.value = userSettings.accesskey;
+  }
+  
+  function _handleAccessKey() {
+    UtilityKTS.setClass(page.contents, settings.hideClass, true);
+    _openAccessKeyDialog();
   }
   
   async function _handleAccessKeySubmit(e) {
@@ -96,8 +100,8 @@ const app = function () {
   function _attachHandlers() {
     var elemDropdown = page.navContainer.getElementsByClassName('dropdown-content')[0];
     elemDropdown.getElementsByClassName('item-edit')[0].addEventListener('click', (e) => { _handleEditContents(e); });
+    elemDropdown.getElementsByClassName('item-accesskey')[0].addEventListener('click', (e) => { _handleAccessKey(e); });
     elemDropdown.getElementsByClassName('item-help')[0].addEventListener('click', (e) => { _handleHelp(e); });
-    elemDropdown.getElementsByClassName('item-about')[0].addEventListener('click', (e) => { _handleAbout(e); });
     
     page.searchText.addEventListener('input', (e) => { _handleLookupInput(e); });
     page.tagText.addEventListener('input', (e) => { _handleLookupInput(e); });
@@ -290,10 +294,6 @@ const app = function () {
     window.open(settings.helpURL, '_blank');
   }
   
-  function _handleAbout(e) {
-    console.log('_handleAbout');
-  }
-  
   //---------------------------------------
   // local storage
   //---------------------------------------
@@ -306,7 +306,7 @@ const app = function () {
       {paramkey: 'cbv3-commentid', resultkey: 'commentid', defaultval: null},
     ];
     
-    userSettings = ParamStorage.load(paramList);
+    userSettings = await ParamStorage.load(paramList);
     
     page.notice.setNotice('');
   }
@@ -323,7 +323,7 @@ const app = function () {
       {paramkey: 'cbv3-commentid', value: userSettings.commentid},    
     ];
     
-    ParamStorage.store(paramList);
+    await ParamStorage.store(paramList);
   }
   
 	//---------------------------------------

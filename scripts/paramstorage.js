@@ -1,6 +1,9 @@
 //-------------------------------------------------------------------------------------
 // wrapper class for Chrome sync storage (fallback to local storage)
 //-------------------------------------------------------------------------------------
+// TODO: 
+//-------------------------------------------------------------------------------------
+
 class ParamStorage {
   constructor() {}
   
@@ -8,151 +11,108 @@ class ParamStorage {
   // load:
   //   paramList: [ {paramkey: xxx, resultkey: xxx, defaultval: xxx}, ... } 
   //-----------------------------------------------------------------------------------
-  static load(paramList) {
-    var results = {};
-    
+  static async load(paramList) {
     if (chrome.storage) {
-      console.log('stub instead of chrome.storage');
-      for (var i = 0; i < paramList.length; i++) {
-        var param = paramList[i];
-        results[param.resultkey] = param.defaultval;
-      }
+      return (await this._loadChromeStorage(paramList));
       
-      
-    } else {   // fallback to localStorage (for non-extension environment)
-      for (var i = 0; i < paramList.length; i++) {
-        var param = paramList[i];
-        var val = localStorage.getItem(param.paramkey);
-        results[param.resultkey] = val ? val : param.defaultval;
-      }
+    } else {
+      return this._loadLocal(paramList);
     }
-    
-    return results;    
   }
-  /*
-  load(params, callback) {
-    var result = {};
-    var resultmap = {};
-    var loadkeys = [];
-    
-    for (var i = 0;  i < params.length; i++) {
-      var key = params[i].key;
-      var resultfield = params[i].resultfield;
-      var defaultval = params[i].defaultval;
-      
-      result[ resultfield ] = defaultval;
-      resultmap[ key ] = resultfield;
-      loadkeys.push( key );
-    }
-    
-    chrome.storage.sync.get(loadkeys, function (loadresult) {
-      for (var key in loadresult) {
-        if (typeof loadresult[key] != 'undefined') result[ resultmap[key] ] = loadresult[key];
-      }
-      
-      if (callback != null) callback(result);
-    });
-   }
-   */
   
   //-----------------------------------------------------------------------------------
   // store:
   //   paramList: [ {paramkey: xxx, value: xxxxx}, ... ]
   //-----------------------------------------------------------------------------------
-  static store(paramList) {
+  static async store(paramList) {
     if (chrome.storage) {
+      this._storeChromeStorage(paramList);
       
-    } else {  // fallback to localStorage (for non-extension environment)
-      for (var i = 0; i < paramList.length; i++) {
-        var param = paramList[i];
-        localStorage.setItem(param.paramkey, param.value);
-      }
+    } else {
+      await this._storeLocal(paramList);
     }
   }
-  
-  /*
-  store(params, callback) {
-    var storagevals = {};
-    for (var i = 0; i < params.length; i++) {
-      storagevals[ params[i].key ] = params[i].value;
-    }
-
-    chrome.storage.sync.set(storagevals, function() {
-      if (callback != null) callback();
-    });
-  }
-  */
-  
+    
   //---------------------------------------------------------------------------------
   // private methods
   //---------------------------------------------------------------------------------
-  static async test(paramList) {
-    var finalResult = null;
+  static _loadLocal(paramList) {
+    var results = {};
+    for (var i = 0; i < paramList.length; i++) {
+      var param = paramList[i];
+      var val = localStorage.getItem(param.paramkey);
+      results[param.resultkey] = val ? val : param.defaultval;
+    }
+    return results;
+  }
+  
+  static _storeLocal(paramList) {
+    for (var i = 0; i < paramList.length; i++) {
+      var param = paramList[i];
+      localStorage.setItem(param.paramkey, param.value);
+    }
+  }
+  
+  static async _loadChromeStorage(paramList) {
     var result = {};
     var resultMap = {};
     var keyList = [];
     
     for (var i = 0;  i < paramList.length; i++) {
       var param = paramList[i];
-      var key = param.paramkey;
-      var resultfield = paramList.resultkey;
-      var defaultval = paramList.defaultval;
-      
-      result[ resultfield ] = defaultval;
-      resultMap[ key ] = resultfield;
-      keyList.push( key );
-    }    
+      result[ param.resultkey ] = param.defaultval;
+      resultMap[ param.paramkey ] = param.resultkey;
+      keyList.push( param.paramkey );
+    }
     
-    var result = await this._testPromise(keyList, resultMap)
-      .then((value) => {
-        finalResult = value;
+    await this._loadPromise(keyList, resultMap)
+      .then((value) => {        
+        for (var i = 0; i < keyList.length; i++) {
+          var key = keyList[i];
+          if (value.hasOwnProperty(key)) result[ resultMap[key] ] = value[key];
+        }
       });
-
-    return finalResult;
+    
+    return result;
   }
   
-  static _testPromise(keyList, resultMap) {
+  static _loadPromise(keyList, resultMap) {
     return new Promise((resolve) => {
-      this._test(keyList, (result) => {
-        console.log('_testPromise result');
-        for (var key in result) {
-          console.log(key + ': ' + result[key]);
-        }
+      this._loadPromiseInner(keyList, (result) => {
         resolve(result);
       });
     })
-  }
-
-  static _test(keyList, promiseCallback) {
-    console.log('_test: ' + JSON.stringify(keyList));
-    keyList = ['cb2_fileid'];
-    chrome.storage.sync.get(null, function(result) {
+  }  
+  
+  static _loadPromiseInner(keyList, promiseCallback) {
+    chrome.storage.sync.get(keyList, function(result) {
       promiseCallback(result);
     });
-  }
+  }    
+  
+  static async _storeChromeStorage(paramList) {
+    var storageVals = {};
+    for (var i = 0; i < paramList.length; i++) {
+      var param = paramList[i];
+      storageVals[param.paramkey] = param.value;
+    }
 
-  static async test2(paramList) {
-    var storageVals = paramList;
+    var result = await this._storePromise(storageVals);
 
-    var result = await this._testPromise2(storageVals);
-
-    return true;
+    return true;    
   }
   
-  static _testPromise2(storageVals) {
+  static _storePromise(storageVals) {
     return new Promise((resolve) => {
-      this._test2(storageVals, () => {
+      this._storePromiseInner(storageVals, () => {
         resolve();
       });
     })
   }
 
-  static _test2(storageVals, promiseCallback) {
-    var theValue = 'xyzzy';
-    console.log(storageVals);
-    chrome.storage.sync.set({storageVals}, function() {
-      console.log('Settings saved');
+  static _storePromiseInner(storageVals, promiseCallback) {
+    chrome.storage.sync.set(storageVals, function() {
       promiseCallback();
     });    
-  }
+  }  
 }
