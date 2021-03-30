@@ -1,12 +1,9 @@
 //------------------------------------------------------------------------------
-// CBv3 popup
+// CBv3 popup (for Chrome Extension)
 //------------------------------------------------------------------------------
-// TODO: data migration mechanism (from old CB to this one)
-// TODO: data download/restore mechanism (in composer?)
-// TODO: method (menu option?) for specifying different access key
 // TODO: finish help
 //------------------------------------------------------------------------------
-const __USELOCALHOST__ = true;
+var __USELOCALHOST__ = false;
 
 const app = function () {
 	const page = {};
@@ -16,7 +13,6 @@ const app = function () {
     commentData: null,
     selectedCommentId: null,
    
-    editContentsURL: __USELOCALHOST__ ? 'http://localhost:8000/commentbuddy/composer' : 'https://aardvark-studios.com/commentbuddy/composer',
     helpURL: 'help.html'
 	};
   
@@ -55,6 +51,9 @@ const app = function () {
     _attachHandlers();
 
     await _loadUserSettings();
+
+    __USELOCALHOST__ = userSettings.uselocal == 'true';
+    settings.editContentsURL = __USELOCALHOST__ ? 'http://localhost:8000/commentbuddy/composer' : 'https://aardvark-studios.com/commentbuddy/composer';
     
     if (!userSettings.accesskey) {
       _openAccessKeyDialog();
@@ -304,6 +303,7 @@ const app = function () {
       {paramkey: 'cbv3-searchtext', resultkey: 'searchtext', defaultval: ''},
       {paramkey: 'cbv3-tags', resultkey: 'tags', defaultval: ''},
       {paramkey: 'cbv3-commentid', resultkey: 'commentid', defaultval: null},
+      {paramkey: 'cbv3-uselocal', resultkey: 'uselocal', defaultval: false},
     ];
     
     userSettings = await ParamStorage.load(paramList);
