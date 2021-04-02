@@ -21,7 +21,21 @@
     "clipboardWrite",
     "contextMenus"
   ],
-        
+     
+  "background" : {
+    "scripts": ["scripts/background.js"]
+  },
+  
+  "commands": {
+    "my-feature": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+9",
+        "mac": "Ctrl+Shift+9"
+      },
+      "description": "launch_commentstore_page"
+    }
+  },
+  
   "icons": {
      "16": "cbv3_logo_16v2.png",
 	 "128": "cbv3_logo_128v2.png"
