@@ -339,9 +339,15 @@ const app = function () {
       return false;
     }
     
-    var dbResult = await SQLDBInterface.doPostQuery('commentbuddy-client/query', 'comment-list', {"accesskey": accesskey});
+    var dbResult = await SQLDBInterface.doPostQuery('commentbuddy-client/query', 'client-comments', {"accesskey": accesskey});
     if (dbResult.success) {
       settings.commentData = dbResult.data;
+      settings.commentData = settings.commentData.sort(function(a,b) {
+        var al = _toPlaintext(a.comment.toLowerCase(), true);
+        var bl = _toPlaintext(b.comment.toLowerCase(), true);
+        return al.localeCompare(bl);
+      });      
+      
       page.notice.setNotice('');
     } else {
       page.notice.setNotice('failed to load comments');
@@ -381,11 +387,16 @@ const app = function () {
     return parsedTags;
   }
   
-  function _toPlaintext(str) {
+  function _toPlaintext(str, extraChecks) {
     var plaintext = str;
 
     plaintext = plaintext.replace(/<.*?\>(.*?)/g, '$1');        // strip all angle bracket tags
     plaintext = plaintext.replace('&nbsp;', ' ');
+    if (extraChecks) {
+      while (plaintext.includes('\n')) plaintext = plaintext.replace('\n', ''); 
+      plaintext = plaintext.replace('•', '');
+      plaintext = plaintext.trim();
+    }
     
     return plaintext;
   }
