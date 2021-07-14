@@ -1,0 +1,264 @@
+/*-----------------------------------------------------*/
+/* styling for CBv3 popup                              */
+/*-----------------------------------------------------*/
+.colorscheme {
+  --bgPrimary: rgba(66, 98, 150, 1.0);
+  --bgSecondary: rgba(66, 98, 150, 0.2);
+  --borderSubtle: rgba(0,0,0, 0.2);
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 13px;  
+  width: 38em;
+  /*height: 44em;  */
+  margin: 0;
+}
+
+.hide-me {
+  display: none;
+}
+
+/*---------------------------------------------*/
+/* main container                              */
+/*---------------------------------------------*/
+.main-container {
+  background-color: var(--bgSecondary);
+  border: 1px solid var(--bgPrimary);
+  width: 100%;
+  position: relative;
+}
+
+/*---------------------------------------------*/
+/* error container                             */
+/*---------------------------------------------*/
+.main-container .error-container {
+  color: white;
+  background-color: var(--bgPrimary);
+  position: absolute;
+  right: 2.0em;
+  top: 0.2em;
+}
+
+/*---------------------------------------------*/
+/* navbar                                      */
+/*---------------------------------------------*/
+.nav-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--bgPrimary);
+}
+
+.nav-container li {
+  float: left;
+}
+
+.nav-container li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 4px 6px 4px 4px;
+  text-decoration: none;
+}
+
+.nav-container li a:hover, .dropdown:hover .dropbtn {
+  color: var(--bgPrimary);
+  background-color: white;
+}
+
+.nav-container li .navbar-logo {
+  color: white;
+  background-color: var(--bgPrimary);
+  cursor: default;
+  padding-top: 0.2em;
+  padding-left: 0.2em;
+}
+
+.nav-container li.dropdown {
+  display: inline-block;
+  float: right;
+}
+
+.nav-container .dropdown-content {
+  display: none;
+  position: absolute;
+  left: 27.6em;
+  background-color: #f9f9f9;
+  min-width: 10.0em;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.nav-container .dropdown-content a {
+  color: black;
+  padding: 0.7em 0.8em;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-container .dropdown-content a:hover {background-color: #ccc;}
+
+.nav-container .dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/*---------------------------------------------*/
+/* contents                                    */
+/*---------------------------------------------*/
+.contents {
+  padding: 0.2em 0 0 0.2em;
+}
+
+/*---------------------------------------------*/
+/* contents - controls                         */
+/*---------------------------------------------*/
+.contents .controls {}
+
+.contents .controls .control-group {
+  position: relative;
+  padding-bottom: 0.2em;
+}
+
+.contents .controls .control-label {
+}
+
+.contents .controls .input-search, .contents .controls .input-tag {
+  font-family: inherit;
+  font-size: inherit;
+  width: 90%;
+}
+
+.contents .controls .icon-tag {
+  font-size: 1.4em;
+  cursor: pointer;
+  padding-left: 0.2em;
+}
+
+.contents .controls .icon-tag.hide-me {
+  visibility: hidden;
+}
+
+.contents .controls .taglist {
+  background-color: white;
+  border: 1px solid var(--borderSubtle);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  position: absolute;
+  right: 1.0em;
+  max-height: 10em;
+  width: 20.0em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-left: 0.2em;
+}
+
+.contents .controls .taglist-item {
+  cursor: pointer;
+}
+
+.contents .controls .taglist-item:nth-of-type(even) {
+  background-color: rgba(0,0,0, 0.05);
+}
+
+.contents .controls .taglist-item:hover {
+  background-color: var(--bgSecondary);
+}
+
+/*---------------------------------------------*/
+/* contents - comment list                     */
+/*---------------------------------------------*/
+.contents .commentlist {
+  background-color: white;
+  padding: 0.4em 0.2em;
+  margin: 0.3em 0.4em 0.4em 0.1em;  
+  max-height: 19.0em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+.contents .commentlist .commentlist-item:nth-of-type(even) {
+  background-color: rgba(0,0,0, 0.05);
+}
+
+.contents .commentlist .commentlist-item:hover {
+  background-color: var(--bgSecondary);
+}
+
+.contents .commentlist .commentlist-item.selected-item {
+  color: white;
+  background-color: var(--bgPrimary);
+}
+
+/*---------------------------------------------*/
+/* contents - rendered                         */
+/*---------------------------------------------*/
+.contents .rendered {
+  background-color: #eee;
+  border: 1px solid var(--borderSubtle);
+  width: 96.7%;
+  margin: 0.6em 0.2em 0.5em 0.2em;
+  padding: 0.2em;
+  max-height: 17.0em;
+  overflow-x: auto;
+  overflow-y: auto;  
+}
+
+/*---------------------------------------------*/
+/* access key dialog                           */
+/*---------------------------------------------*/
+.accesskey-dialog {
+  margin: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.accesskey-dialog .accesskey-text {
+  margin-bottom: 0.4em;
+}
+
+.accesskey-dialog .input-accesskey {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 1.0em;
+  width: 60%;
+}
+
+.accesskey-dialog .button-accesskey {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 1.0em;
+  color: var(--bgPrimary);
+  background-color: white;
+  border: 1px solid var(--bgPrimary);
+}
+
+.accesskey-dialog .button-accesskey:hover {
+  color: white;
+  background-color: var(--bgPrimary);
+  border-color: white;
+}
+
+/*------------------------------------------------------------------
+ * standard error and notice
+ *------------------------------------------------------------------*/
+.standard_error {
+  display: none;
+  font-style: italic;
+  color: blue;
+  margin-bottom: 0.4em;;
+}
+
+.standard-notice { 
+  display: inline-block;
+  font-size: 1em;
+  font-style: italic;
+  margin-left: 1.0em;
+  margin-right: 0.2em;
+}
+
+#noticeSpinner {
+  font-size: 0.9em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+/*-- end of standard notice and error --*/

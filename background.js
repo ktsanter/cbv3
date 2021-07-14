@@ -5,6 +5,7 @@
 //----------------------------------------------------------------------
 const __USELOCALHOST__ = false;
 
+/*--------------------------
 addContextMenuOption();
 
 function addContextMenuOption() {
@@ -36,6 +37,7 @@ function addSelectedTextToRepository(saveText) {
     _openApp();
   });
 }
+---------------*/
 
 // handler for keyboard shortcut 
 chrome.commands.onCommand.addListener(function(command) {
@@ -50,6 +52,7 @@ function _openApp() {
   }  
 }
 
+/*---------------
 async function doPostQuery(queryType, queryName, postData) {
   var resultData = {success: false};
   
@@ -62,11 +65,13 @@ async function doPostQuery(queryType, queryName, postData) {
   }
   
   return resultData;
-}   
+} 
+---------------*/  
   
 //----------------------------------------------------------------------
 // DB interface
 //----------------------------------------------------------------------  
+/*------------------
 async function dbPost(queryType, queryName, postData) {
   const METHOD_TITLE = 'dbPost';
   
@@ -115,3 +120,4 @@ function __buildApiUrl__(queryType, queryName) {
   
   return url;
 }   
+-----------------------*/

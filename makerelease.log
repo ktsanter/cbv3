@@ -1,0 +1,43 @@
+time is 07/14/2021 14:13:59.91 
+C:popup.html
+1 File(s) copied
+C:manifest.json
+1 File(s) copied
+C:LICENSE
+1 File(s) copied
+C:cbv3_logo_128.png
+C:cbv3_logo_128v2.png
+C:cbv3_logo_16.png
+C:cbv3_logo_16v2.png
+4 File(s) copied
+C:background.js
+1 File(s) copied
+styles\popup.css
+1 File(s) copied
+scripts\clipboard.min.js
+scripts\clipboard_copy.js
+scripts\create_element.js
+scripts\paramstorage.js
+scripts\popup.js
+scripts\require.js
+scripts\require_popup.js
+scripts\sqldbinterface.js
+scripts\standard_notice.js
+scripts\utilitykts.js
+10 File(s) copied
+
+7-Zip 18.01 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-01-28
+
+Scanning the drive:
+2 folders, 19 files, 90946 bytes (89 KiB)
+
+Creating archive: ..\cb_release_3.01.zip
+
+Add new data to archive: 2 folders, 19 files, 90946 bytes (89 KiB)
+
+
+Files read from disk: 19
+Archive size: 34581 bytes (34 KiB)
+Everything is Ok
+release package for "CommentBuddyV3" is complete 
+release file name: cb_release_3.01.zip 
