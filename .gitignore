@@ -1,0 +1,8 @@
+#gitignore for CBV3 extension project
+#instructions to use db on server.txt
+release_staging
+relaase_staging/*.*
+
+# Honor .ignore
+*.ignore
+*.ignore.*
